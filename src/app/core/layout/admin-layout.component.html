@@ -9,8 +9,8 @@
 
       <nav class="flex flex-col items-center gap-3 w-full">
         <!-- Logo -->
-        <div class="flex flex-col items-center gap-1 text-center">
-          <i [class]="'pi pi-wave-pulse' + ' !text-2xl'"></i>
+        <div class="flex flex-col items-center gap-1 text-center" pTooltip="WorldPinball Supervisor">
+          <i [class]="'pi pi-wave-pulse'+' !text-2xl text-red-500 animate-pulse drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]' "></i>
           <h1 class="text-[10px] font-medium tracking-tight text-align-center items-center">
             WorldPinball Supervisor
           </h1>
@@ -21,8 +21,9 @@
           <a
             [routerLink]="item.route"
             routerLinkActive="bg-indigo-600 text-white shadow-lg shadow-indigo-500/25"
-            [title]="item.label"
+
             class="flex items-center justify-center w-12 h-12 rounded-2xl text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition-all text-2xl"
+            [pTooltip]="item.label"
           >
             <i [class]="item.icon + ' !text-2xl'"></i>
           </a>
@@ -39,7 +40,8 @@
             <span class="text-[10px] font-medium tracking-tight text-align-center items-center">Utilisateur</span>
           <p-divider class="w-full px-2" />
           <!-- Icône Paramètres -->
-          <a routerLink="/settings" class="text-slate-400 hover:text-white transition-colors p-2">
+          <a routerLink="/settings" class="text-slate-400 hover:text-white transition-colors p-2"
+             pTooltip="Paramètres">
             <i class="pi pi-cog !text-2xl"></i>
           </a>
         </footer>
