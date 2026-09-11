@@ -1,0 +1,35 @@
+`
+        <div class="min-h-screen w-full flex items-center justify-center bg-slate-950 p-4">
+            <p-card class="max-w-sm w-full" header="Welcome back" subheader="Sign in with your email to continue.">
+                <form class="space-y-6 mt-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="flex flex-col gap-2">
+                        <label pLabel for="username">Username</label>
+                        <input pInputText id="username" type="text" formControlName="username" placeholder="Enter your username"  />
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label pLabel for="password" class="flex-1">Password</label>
+                            <button  type="button" pButton variant="link" class="p-0">Forgot password?</button>
+                        </div>
+                        <input
+                          pInputText
+                          id="password"
+                          type="password"
+                          formControlName="password"
+                          placeholder="Enter your password"
+                        />
+                    </div>
+                </form>
+                <ng-template #footer>
+                    <div class="flex flex-col gap-4">
+                        <button  [disabled]="loginForm.invalid" (click)="onSubmit()"  type="button" pButton class="w-full">Login</button>
+                        <button type="button" pButton [outlined]="true" class="w-full">Login with Google</button>
+                        <div class="mt-2 text-center text-surface-500 text-sm">
+                            Don't have an account?
+                            <button   type="button" pButton variant="link" class="p-0">Sign up</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-card>
+
+        </div>

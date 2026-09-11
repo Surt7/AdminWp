@@ -1,0 +1,188 @@
+<section class="flex flex-col gap-6">
+
+  <!-- ==================== CAS 1 : VUE GRILLE DES MODÈLES ==================== -->
+  @if (!selectedModel()) {
+    <header>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Supervision des Flippers</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Cliquez sur un modèle pour voir ses bornes déployées</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      @for (item of modelSummaries(); track item.model.id) {
+        <a
+          [routerLink]="['/machines', item.model.id]"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 hover:bg-slate-50 dark:hover:bg-slate-900/90 transition-all flex flex-col justify-between gap-4 cursor-pointer block shadow-sm dark:shadow-none"
+        >
+
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white">{{ item.model.name }}</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ item.model.manufacturer }} • {{ item.model.year }}</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-700 dark:text-slate-300">
+              {{ item.totalUnits }} bornes
+            </span>
+          </div>
+
+          <!-- Pastilles -->
+          <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/80">
+            <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 dark:text-gray-400 bg-slate-100 dark:bg-transparent">
+              <span class="w-1.5 h-1.5 rounded-full bg-lime-500"></span> {{ item.onlineCount }}
+            </span>
+            <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 dark:text-gray-400 bg-slate-100 dark:bg-transparent">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> {{ item.inGameCount }}
+            </span>
+            <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 dark:text-gray-400 bg-slate-100 dark:bg-transparent">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> {{ item.maintenanceCount }}
+            </span>
+            <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-slate-600 dark:text-gray-400 bg-slate-100 dark:bg-transparent">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> {{ item.offlineCount }}
+            </span>
+          </div>
+        </a>
+      }
+    </div>
+  }
+
+  <!-- ==================== CAS 2 : VUE DÉTAILLÉE DU MODÈLE SÉLECTIONNÉ ==================== -->
+  @else {
+    <!-- En-tête avec bouton retour -->
+    <header class="flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a
+          routerLink="/machines"
+          class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer inline-flex items-center justify-center border border-slate-200 dark:border-transparent"
+          title="Retour aux catégories"
+        >
+          <i class="pi pi-arrow-left"></i>
+        </a>
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{{ selectedModel()?.name }}</h1>
+          <p class="text-sm text-slate-500 dark:text-slate-400">{{ selectedModel()?.manufacturer }} • {{ selectedModel()?.year }}</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Liste des bornes physiques réelles de ce modèle -->
+    <div class="flex flex-col gap-3">
+      @for (unit of selectedModelUnits(); track unit.id) {
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm dark:shadow-none">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-slate-900 dark:text-white">{{ unit.serialNumber }}</span>
+              <span class="text-xs text-slate-400 dark:text-slate-500">• IP: {{ unit.ipAddress }}</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+               {{ unit.location }} — 🎮 {{ unit.totalGamesPlayed }} parties — ⏱️ Ping: {{ unit.lastPing }}
+            </p>
+          </div>
+
+          <!-- Statut actuel -->
+          <!-- Droite de la carte : Statut et Actions rapides -->
+          <div class="flex items-center gap-3">
+            <!-- 1. Le Badge coloré avec @switch -->
+            @switch (unit.status) {
+              @case ('ONLINE') {
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                ● En ligne
+              </span>
+              }
+              @case ('IN_GAME') {
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                🎮 En partie
+              </span>
+              }
+              @case ('MAINTENANCE') {
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                ⚠️ Maintenance
+              </span>
+              }
+              @case ('OFFLINE') {
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                ○ Hors ligne
+              </span>
+              }
+            }
+            <!-- 2. Les 4 boutons de changement de statut -->
+            <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60">
+              <button
+                (click)="changeStatus(unit.id, 'ONLINE')"
+                pTooltip="Passer En Ligne"
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-xs hover:bg-emerald-500/20 transition-colors cursor-pointer"
+              >
+                🟢
+              </button>
+              <button
+                (click)="changeStatus(unit.id, 'IN_GAME')"
+                pTooltip="Passer En Partie"
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-xs hover:bg-indigo-500/20 transition-colors cursor-pointer"
+              >
+                🎮
+              </button>
+              <button
+                (click)="changeStatus(unit.id, 'MAINTENANCE')"
+                pTooltip="Mettre en Maintenance"
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-xs hover:bg-amber-500/20 transition-colors cursor-pointer"
+              >
+                🟡
+              </button>
+              <button
+                (click)="changeStatus(unit.id, 'OFFLINE')"
+                pTooltip="Passer Hors Ligne"
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-xs hover:bg-rose-500/20 transition-colors cursor-pointer"
+              >
+                🔴
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Formulaire d'ajout -->
+    <div class="mt-4 p-5 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+      <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">
+        + Déployer une nouvelle borne {{ selectedModel()?.name }}
+      </h3>
+
+      <form [formGroup]="addUnitForm" (ngSubmit)="onAddUnit()" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- N° Série -->
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">N° de Série *</label>
+          <input type="text" formControlName="serialNumber" placeholder="Ex: ST-GZ-04" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none focus:border-indigo-500" />
+          @if (addUnitForm.controls.serialNumber.invalid && addUnitForm.controls.serialNumber.touched) {
+            <p class="text-[11px] text-rose-500 mt-1">Requis (min 3 caractères).</p>
+          }
+        </div>
+
+        <!-- IP -->
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Adresse IP *</label>
+          <input type="text" formControlName="ipAddress" placeholder="Ex: 192.168.1.150" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none focus:border-indigo-500" />
+          @if (addUnitForm.controls.ipAddress.invalid && addUnitForm.controls.ipAddress.touched) {
+            <p class="text-[11px] text-rose-500 mt-1">Format IP invalide.</p>
+          }
+        </div>
+
+        <!-- Emplacement -->
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Emplacement *</label>
+          <input type="text" formControlName="location" placeholder="Ex: Arcade Paris" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none focus:border-indigo-500" />
+          @if (addUnitForm.controls.location.invalid && addUnitForm.controls.location.touched) {
+            <p class="text-[11px] text-rose-500 mt-1">L'emplacement est requis.</p>
+          }
+        </div>
+
+        <!-- Bouton Submit -->
+        <div class="md:col-span-3 flex justify-end mt-2">
+          <button type="submit" [disabled]="addUnitForm.invalid" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-semibold cursor-pointer">
+            Ajouter la borne
+          </button>
+        </div>
+
+      </form>
+    </div>
+  }
+
+</section>
