@@ -1,12 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
-import {ThemeService} from '../theme/theme.service';
-import { Divider, DividerModule } from 'primeng/divider';
-import { AvatarModule } from 'primeng/avatar';
-interface NavItem{
+import { DividerModule } from 'primeng/divider';
+import { AdminFooterComponent } from './footer/admin-footer.component';
+import { NavIconButtonComponent } from './nav-icon-button/nav-icon-button.component';
+
+export interface NavItem {
   icon: string;
-  label:string;
+  label: string;
   route: string;
 }
 
@@ -14,20 +15,16 @@ interface NavItem{
   selector: 'app-admin-layout',
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css',
+  standalone: true,
   imports: [
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    Divider,
     DividerModule,
-    AvatarModule,
     TooltipModule,
+    AdminFooterComponent,
+    NavIconButtonComponent,
   ],
 })
-export class AdminLayout {
-  protected readonly themeService = inject(ThemeService);
-
-
+export default class AdminLayout {
   protected readonly navItems: NavItem[] = [
     { icon: 'pi pi-home', label: 'Dashboard', route: '/dashboard' },
     { icon: 'pi pi-server', label: 'Machines', route: '/machines' },

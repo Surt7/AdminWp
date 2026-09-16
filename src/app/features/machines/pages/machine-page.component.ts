@@ -1,25 +1,33 @@
-import { Component, inject, signal, computed, input } from '@angular/core';
+import { Component, inject, computed, input, Signal } from '@angular/core';
 import { MachineService } from '../data-access/machines.service';
 import { TooltipModule } from 'primeng/tooltip';
-import { PinballModel ,MachineStatus} from '../models/machine.model';
-import {ReactiveFormsModule,FormControl,FormGroup,Validators} from '@angular/forms';
+import { MachineStatus, PinballModel } from '../models/machine.model';
+import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
+import { AddMachineFormComponent } from '../components/add-machine/add-machine-form.component';
+import { MachineHeaderComponent } from '../components/machine-header/machine-header.component';
+import { ColoredButtonComponent } from '../components/colored-button/colored-button.component';
 
 @Component({
   selector: 'app-machines-page',
   standalone: true,
   templateUrl: './machine-page.component.html',
   styleUrl: './machine-page.component.css',
-  imports: [TooltipModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    TooltipModule,
+    ReactiveFormsModule,
+    RouterLink,
+    AddMachineFormComponent,
+    MachineHeaderComponent,
+    ColoredButtonComponent,
+  ],
 })
 export class MachinesPageComponent {
-
   private readonly machineService = inject(MachineService);
 
   readonly modelId = input<string>();
 
-  protected readonly selectedModel = computed(() => {
+  protected readonly selectedModel: Signal<PinballModel | null> = computed(() => {
     const id = this.modelId();
     if (!id) return null;
     return this.machineService.models().find((m) => m.id === id) ?? null;
@@ -37,33 +45,12 @@ export class MachinesPageComponent {
     this.machineService.updateUnitStatus(unitId, nextStatus);
   }
 
-
-  // 1. Déclaration du formulaire typé avec ses règles de validation
-  protected readonly addUnitForm = new FormGroup({
-    serialNumber: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.minLength(3)],
-    }),
-    ipAddress: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.pattern(/^(\d{1,3}\.){3}\d{1,3}$/)],
-    }),
-    location: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    status: new FormControl<MachineStatus>('ONLINE', {
-      nonNullable: true,
-    }),
-  });
-
-  protected onAddUnit(): void {
-    if (this.addUnitForm.invalid) {
-      this.addUnitForm.markAllAsTouched(); // Force l'affichage des erreurs
-      return;
-    }
-    // getRawValue() extrait l'objet typé TypeScript { serialNumber, ipAddress, location, status }
-    const values = this.addUnitForm.getRawValue();
+  protected onAddUnit(values: {
+    serialNumber: string;
+    ipAddress: string;
+    location: string;
+    status: MachineStatus;
+  }): void {
     const currentModel = this.selectedModel();
     if (!currentModel) return;
 
@@ -77,6 +64,5 @@ export class MachinesPageComponent {
       totalGamesPlayed: 0,
       lastPing: "À l'instant",
     });
-    this.addUnitForm.reset();
   }
 }

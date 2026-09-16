@@ -1,0 +1,49 @@
+<!-- Formulaire d'ajout -->
+<div
+  class="mt-4 p-5 rounded-2xl bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
+  <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">
+    + Déployer une nouvelle borne {{ model()?.name }}
+  </h3>
+
+  <form [formGroup]="addUnitForm" (ngSubmit)="onAddUnit()" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <!-- N° Série -->
+    <div>
+      <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">N° de Série *</label>
+      <input type="text" formControlName="serialNumber" placeholder="Ex: ST-GZ-04"
+             class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none focus:border-indigo-500" />
+      @if (addUnitForm.controls.serialNumber.invalid && addUnitForm.controls.serialNumber.touched) {
+        <p class="text-[11px] text-rose-500 mt-1">Requis (min 3 caractères).</p>
+      }
+    </div>
+
+    <!-- IP -->
+    <div>
+      <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Adresse IP *</label>
+      <input type="text" formControlName="ipAddress" placeholder="Ex: 192.168.1.150"
+             class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none focus:border-indigo-500" />
+      @if (addUnitForm.controls.ipAddress.invalid && addUnitForm.controls.ipAddress.touched) {
+        <p class="text-[11px] text-rose-500 mt-1">Format IP invalide.</p>
+      }
+    </div>
+
+    <!-- Emplacement -->
+    <div>
+      <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Emplacement *</label>
+      <input type="text" formControlName="location" placeholder="Ex: Arcade Paris"
+             class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm outline-none focus:border-indigo-500" />
+      @if (addUnitForm.controls.location.invalid && addUnitForm.controls.location.touched) {
+        <p class="text-[11px] text-rose-500 mt-1">L'emplacement est requis.</p>
+      }
+    </div>
+
+    <!-- Bouton Submit -->
+    <div class="md:col-span-3 flex justify-end mt-2">
+      <button type="submit" [disabled]="addUnitForm.invalid"
+              class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-sm font-semibold cursor-pointer">
+        Ajouter la borne
+      </button>
+    </div>
+
+  </form>
+</div>
