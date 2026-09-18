@@ -4,7 +4,7 @@
     <i
       [class]="'pi pi-wave-pulse'+' !text-2xl text-red-500 animate-pulse drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]' "></i>
     <h1
-      class="text-[10px] font-medium tracking-tight text-align-center items-center text-slate-700 dark:text-slate-200">
+      class="text-[10px] font-medium tracking-tight text-align-center items-center text-surface-700 dark:text-surface-200">
       WorldPinball Supervisor
     </h1>
   </div>
@@ -13,9 +13,9 @@
   @for (item of navItems(); track item.route) {
     <a
       [routerLink]="item.route"
-      routerLinkActive="bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
+      routerLinkActive="bg-surface-200 dark:bg-surface-800 text-surface-900 dark:text-white shadow-sm"
 
-      class="flex items-center justify-center w-12 h-12 rounded-2xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition-all text-2xl"
+      class="flex items-center justify-center w-12 h-12 rounded-2xl text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 hover:text-surface-900 dark:hover:text-surface-100 transition-all text-2xl"
       [pTooltip]="item.label"
     >
       <i [class]="item.icon + ' !text-xl'"></i>

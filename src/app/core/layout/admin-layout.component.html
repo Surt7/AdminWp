@@ -1,26 +1,23 @@
 <div
-  class="flex h-screen bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 p-4 gap-4 justify-center transition-colors">
+  class="flex h-screen bg-surface-100 dark:bg-surface-950 text-surface-800 dark:text-surface-100 p-4 gap-4 justify-center transition-colors">
 
   <!-- container -->
   <div class="flex w-full max-w-[1440px] h-full max-h-[950px] gap-4">
 
-    <!-- Sidebar -->
+    <!-- Sidebar avec accent rouge arcade en mode sombre -->
     <aside
-      class="w-20 h-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl py-6 flex flex-col items-center justify-between transition-colors shadow-sm dark:shadow-none">
-
+      class="w-20 h-full bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 dark:border-l-4 dark:border-l-red-600 rounded-3xl py-6 flex flex-col items-center justify-between transition-colors shadow-sm dark:shadow-none">
 
       <nav-icon-button [navItems]="navItems" />
 
       <nav class="flex flex-col items-center gap-3 w-full">
-
         <app-admin-footer />
-
       </nav>
     </aside>
 
     <!-- main content -->
     <main
-      class="flex-1 bg-white/80 dark:bg-slate-900/25 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 overflow-y-auto transition-colors shadow-sm dark:shadow-none">
+      class="flex-1 bg-white/80 dark:bg-surface-900/60 border border-surface-200 dark:border-surface-800 rounded-3xl p-6 overflow-y-auto transition-colors shadow-sm dark:shadow-none">
       <router-outlet />
     </main>
   </div>
