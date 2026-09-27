@@ -2,11 +2,11 @@ import { Component, inject, computed, input, Signal } from '@angular/core';
 import { MachineService } from '../data-access/machines.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { MachineStatus, PinballModel } from '../models/machine.model';
-import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AddMachineFormComponent } from '../components/add-machine/add-machine-form.component';
 import { MachineHeaderComponent } from '../components/machine-header/machine-header.component';
-import { ColoredButtonComponent } from '../components/colored-button/colored-button.component';
+import { FilterComponent } from '../../../shared/components/filter/filter.component';
 
 @Component({
   selector: 'app-machines-page',
@@ -19,14 +19,17 @@ import { ColoredButtonComponent } from '../components/colored-button/colored-but
     RouterLink,
     AddMachineFormComponent,
     MachineHeaderComponent,
-    ColoredButtonComponent,
+    FilterComponent,
   ],
 })
 export class MachinesPageComponent {
   private readonly machineService = inject(MachineService);
 
   readonly modelId = input<string>();
-
+  ngOnInit(): void {
+    // Équivalent de : useEffect(() => { loadUnitsFormApi() }, [])
+    this.machineService.loadUnitsFormApi();
+  }
   protected readonly selectedModel: Signal<PinballModel | null> = computed(() => {
     const id = this.modelId();
     if (!id) return null;

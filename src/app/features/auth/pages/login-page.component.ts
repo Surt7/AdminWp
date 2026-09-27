@@ -7,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { LabelModule } from 'primeng/label';
 
-
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -38,7 +37,7 @@ export class LoginPageComponent {
     }
 
     const credentials = this.loginForm.getRawValue();
-    this.authService.login(credentials);
+    this.authService.login();
     this.router.navigate(['/machines']);
   }
 }

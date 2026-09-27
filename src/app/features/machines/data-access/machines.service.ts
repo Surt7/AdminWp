@@ -1,8 +1,13 @@
 import { Injectable, signal, computed, inject, DestroyRef } from '@angular/core';
-import { MachineStatus, MachineUnit, ModelSummary, PinballModel } from '../models/machine.model';
+import {
+  ApiMachineDto,
+  MachineStatus,
+  MachineUnit,
+  ModelSummary,
+  PinballModel,
+} from '../models/machine.model';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 
 const INITIAL_MODELS: PinballModel[] = [
   { id: 'godzilla', name: 'Godzilla Premium', manufacturer: 'Stern Pinball', year: 2021 },
@@ -91,39 +96,33 @@ export class MachineService {
   #units = signal<MachineUnit[]>(INITIAL_UNITS);
 
   private readonly http = inject(HttpClient);
-private readonly destroyRef = inject(DestroyRef);
+  private readonly destroyRef = inject(DestroyRef);
 
-loadUnitsFormApi():void{
-  this.#isLoading.set(true);
-  this.#error.set(null);
+  loadUnitsFormApi(): void {
+    this.#isLoading.set(true);
+    this.#error.set(null);
 
-  this.http
-    .get<MachineUnit[]>('https://jsonplaceholder.typicode.com/users')
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe({
-      next: (data) => {
-      this.#units.set(data);
-      this.#isLoading.set(false);
-
-      },
-      error: (err)=>{
-        console.error('erreur API: ',err);
-        this.#error.set('Impossible de contacter le serveur backend');
-        this.#isLoading.set(false);
-      },
-    });
-}
-
+    this.http
+      .get<ApiMachineDto[]>('/api/v1/admin/machines', { withCredentials: true })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data: ApiMachineDto[]) => {
+          console.log('Mes machines DTO reçues :', data);
+          this.#isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('erreur API: ', err);
+          this.#error.set('Impossible de contacter le serveur backend');
+          this.#isLoading.set(false);
+        },
+      });
+  }
 
   #isLoading = signal<boolean>(false);
   #error = signal<string | null>(null);
 
-
   readonly isLoading = this.#isLoading.asReadonly();
   readonly error = this.#error.asReadonly();
-
-
-
 
   readonly units = this.#units.asReadonly();
   readonly models = this.#models.asReadonly();

@@ -1,52 +1,48 @@
 <section class="flex flex-col gap-6">
 
-
+  <app-filter />
   @if (!selectedModel()) {
     <header>
       <h1 class="text-2xl font-bold text-surface-900 dark:text-white tracking-tight">Supervision des Flippers</h1>
       <p class="text-sm text-surface-500 dark:text-surface-400">Cliquez sur un modèle pour voir ses bornes déployées</p>
     </header>
-
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       @for (item of modelSummaries(); track item.model.id) {
         <a
           [routerLink]="['/machines', item.model.id]"
           class="p-5 rounded-2xl bg-white dark:bg-surface-800/60 border border-surface-200 dark:border-surface-800 hover:border-indigo-500/50 hover:bg-surface-50 dark:hover:bg-surface-900/90 transition-all flex flex-col justify-between gap-4 cursor-pointer block shadow-sm dark:shadow-none"
         >
-
           <div class="flex items-start justify-between">
             <div>
               <h3 class="text-xl font-bold text-surface-900 dark:text-white">{{ item.model.name }}</h3>
               <p class="text-xs text-surface-500 dark:text-surface-400 mt-0.5">{{ item.model.manufacturer }}
                 • {{ item.model.year }}</p>
             </div>
-            <span
-              class="px-2.5 py-1 rounded-lg bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-primary-600 text-xs font-medium text-surface-700 dark:text-surface-300">
-              {{ item.totalUnits }} bornes
-            </span>
+
+            <div class="flex items-center gap-3">
+              <span class="flex items-center gap-1.5 text-xs font-semibold text-surface-500 dark:text-surface-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-lime-500 shadow-[0_0_4px_rgba(132,204,22,0.8)]"></span>
+                {{ item.onlineCount }}
+              </span>
+              <!-- 🟡 Pastille Orange / Pending (affichée UNIQUEMENT s'il y en a au moins 1) -->
+              @if (item.maintenanceCount > 0) {
+                <span class="flex items-center gap-1.5 text-xs font-semibold text-amber-500 dark:text-amber-400"
+                      title="En attente / maintenance">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_4px_rgba(245,158,11,0.8)]"></span>
+                  {{ item.maintenanceCount }}
+                </span>
+              }
+              <span
+                class="px-2.5 py-1 rounded-lg bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-primary-600 text-xs font-medium text-surface-700 dark:text-surface-300">
+                {{ item.totalUnits }} bornes
+              </span>
+            </div>
           </div>
 
-          <!-- Pastilles -->
-          <div class="flex items-center gap-2 pt-2 border-t border-surface-100 dark:border-surface-800/80">
-            <span
-              class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-surface-600 dark:text-surface-400 bg-surface-100 dark:bg-transparent">
-              <span class="w-1.5 h-1.5 rounded-full bg-lime-500"></span> {{ item.onlineCount }}
-            </span>
-            <span
-              class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-surface-600 dark:text-surface-400 bg-surface-100 dark:bg-transparent">
-              <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span> {{ item.inGameCount }}
-            </span>
-            <span
-              class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-surface-600 dark:text-surface-400 bg-surface-100 dark:bg-transparent">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> {{ item.maintenanceCount }}
-            </span>
-            <span
-              class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold text-surface-600 dark:text-surface-400 bg-surface-100 dark:bg-transparent">
-              <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> {{ item.offlineCount }}
-            </span>
-          </div>
         </a>
+
       }
+
     </div>
   } @else {
 
@@ -62,11 +58,12 @@
               <span class="text-xs text-surface-400 dark:text-surface-500">• IP: {{ unit.ipAddress }}</span>
             </div>
             <p class="text-xs text-surface-500 dark:text-surface-400 mt-1">
-              {{ unit.location }} — 🎮 {{ unit.totalGamesPlayed }} parties — ⏱️ Ping: {{ unit.lastPing }}
+              {{ unit.location }} —  {{ unit.totalGamesPlayed }} parties — Ping: {{ unit.lastPing }}
+              — Statut: {{ unit.status }}
             </p>
           </div>
 
-          <colored-button [currentUnit]="unit" (statusUnitChanged)="changeStatus($event.id, $event.status)" />
+
         </div>
       }
     </div>

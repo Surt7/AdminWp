@@ -5,6 +5,9 @@ import { providePrimeNG } from 'primeng/config';
 import { provideHttpClient } from '@angular/common/http';
 import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './core/routing/custom-route-reuse-strategy';
+import { AuthService } from './core/auth/service/auth.service';
 
 const ArcadePreset = definePreset(Aura, {
   semantic: {
@@ -46,6 +49,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
     providePrimeNG({
       theme: {
         preset: ArcadePreset,
