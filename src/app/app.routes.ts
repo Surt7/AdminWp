@@ -36,6 +36,14 @@ export const routes: Routes = [
           return MachinesPageComponent;
         },
       },
+      {
+        path: 'test-lobby',
+        loadComponent: async () => {
+          const { LobbyTestComponent } =
+            await import('./features/lobby/loby-test/lobby-test.component');
+          return LobbyTestComponent;
+        },
+      },
     ],
   },
 ];
