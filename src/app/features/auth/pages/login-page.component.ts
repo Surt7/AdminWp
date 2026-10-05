@@ -19,25 +19,8 @@ export class LoginPageComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  protected loginForm = new FormGroup({
-    username: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    password: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-  });
-
-  protected onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    const credentials = this.loginForm.getRawValue();
+  protected onLogin(): void {
+    // Redirects directly to the BFF Keycloak OIDC challenge
     this.authService.login();
-    this.router.navigate(['/machines']);
   }
 }

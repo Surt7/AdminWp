@@ -3,10 +3,10 @@ import { MachineService } from '../data-access/machines.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { MachineStatus, PinballModel } from '../models/machine.model';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { AddMachineFormComponent } from '../components/add-machine/add-machine-form.component';
 import { MachineHeaderComponent } from '../components/machine-header/machine-header.component';
 import { FilterComponent } from '../../../shared/components/filter/filter.component';
+import { CategoryLicenceComponent } from '../components/category-licence/category-licence.component';
 
 @Component({
   selector: 'app-machines-page',
@@ -16,10 +16,10 @@ import { FilterComponent } from '../../../shared/components/filter/filter.compon
   imports: [
     TooltipModule,
     ReactiveFormsModule,
-    RouterLink,
     AddMachineFormComponent,
     MachineHeaderComponent,
     FilterComponent,
+    CategoryLicenceComponent,
   ],
 })
 export class MachinesPageComponent {
@@ -27,7 +27,7 @@ export class MachinesPageComponent {
 
   readonly modelId = input<string>();
   ngOnInit(): void {
-    // Équivalent de : useEffect(() => { loadUnitsFormApi() }, [])
+
     this.machineService.loadUnitsFormApi();
   }
   protected readonly selectedModel: Signal<PinballModel | null> = computed(() => {
@@ -41,7 +41,9 @@ export class MachinesPageComponent {
   protected readonly selectedModelUnits = computed(() => {
     const currentModel = this.selectedModel();
     if (!currentModel) return [];
-    return this.machineService.units().filter((u) => u.modelId === currentModel.id);
+    return this.machineService.machines().filter(
+      (m) => m.ipSlug === currentModel.id || m.licenseName === currentModel.name,
+    );
   });
 
   protected changeStatus(unitId: string, nextStatus: MachineStatus): void {
@@ -60,9 +62,9 @@ export class MachinesPageComponent {
     this.machineService.addUnit({
       id: `u-${Date.now()}`,
       serialNumber: values.serialNumber,
-      modelId: currentModel.id,
-      ipAddress: values.ipAddress,
-      location: values.location,
+      licenseName: currentModel.name,
+      ipSlug: currentModel.id,
+      displayName: values.location,
       status: values.status,
       totalGamesPlayed: 0,
       lastPing: "À l'instant",

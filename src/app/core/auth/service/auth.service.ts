@@ -2,6 +2,7 @@ import { Injectable, computed, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { BffUserDto, User } from '../models/auth.model';
+import { API_ENDPOINTS } from '../../constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AuthService {
   readonly isAdmin = computed(() => this.currentUser()?.role === 'ADMIN');
 
   login(): void {
-    window.location.href = '/api/auth/login?returnUrl=http://localhost:4200/machines';
+    window.location.href = API_ENDPOINTS.AUTH.LOGIN(window.location.href);
   }
 
   logout(): void {
@@ -25,7 +26,7 @@ export class AuthService {
   async loadCurrentUser(): Promise<User | null> {
     try {
       const dto = await firstValueFrom(
-        this.http.get<BffUserDto>('/api/auth/user', {
+        this.http.get<BffUserDto>(API_ENDPOINTS.AUTH.CURRENT_USER, {
           withCredentials: true,
         }),
       );

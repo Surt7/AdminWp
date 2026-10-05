@@ -36,3 +36,103 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+.btn-pill-inset {
+  /* 1. Layout, shape & typography */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 28px;
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+
+  /* 2. Background surface with subtle vertical gradient */
+  background: linear-gradient(180deg, #fdfdfd 0%, #eaecee 100%);
+
+  /* 3. Primary outer border stroke */
+  border: 1.5px solid #d5d9de;
+
+  /* 4. Layered shadows: concentric ring, drop shadow & inset groove */
+  box-shadow: /* Outer highlight ring */ 0 0 0 2px rgba(255, 255, 255, 0.4),
+    /* Soft ambient elevation drop shadow */ 0 4px 12px rgba(0, 0, 0, 0.25),
+    /* Inner concentric engraved groove (inset ring effect) */ inset 0 0 0 2px #c8cdd3,
+    /* Top edge specular highlight */ inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    /* Bottom bevel depth shadow */ inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover state */
+.btn-pill-inset:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f2f4 100%);
+  border-color: #c0c6cc;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6),
+  0 6px 16px rgba(0, 0, 0, 0.3),
+  inset 0 0 0 2px #bdc3ca,
+  inset 0 1px 2px rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+/* Active / pressed state */
+.btn-pill-inset:active {
+  transform: translateY(1px);
+  background: linear-gradient(180deg, #e5e8eb 0%, #dbe0e5 100%);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3),
+  0 2px 4px rgba(0, 0, 0, 0.2),
+  inset 0 2px 4px rgba(0, 0, 0, 0.15),
+  inset 0 0 0 2px #b0b6bd;
+}
+
+/* --- Recessed Segmented Toggle Track (Physical Rocker Switch Look) --- */
+.segmented-toggle-track {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 4px;
+  background: #0c1015;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  gap: 4px;
+}
+
+.segmented-toggle-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  outline: none;
+  background: transparent;
+  color: #94a3b8;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.segmented-toggle-btn:hover:not(.active) {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.segmented-toggle-btn.active {
+  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+  color: #0f172a;
+  border-color: #cbd5e1;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.25),
+    0 3px 8px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1.5px #cbd5e1,
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.12);
+}
+

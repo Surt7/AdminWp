@@ -2,12 +2,12 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 import { providePrimeNG } from 'primeng/config';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authErrorInterceptor } from './core/interceptors/auth-error.interceptor';
 import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './core/routing/custom-route-reuse-strategy';
-import { AuthService } from './core/auth/service/auth.service';
 
 const ArcadePreset = definePreset(Aura, {
   semantic: {
@@ -58,6 +58,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authErrorInterceptor])),
   ],
 };

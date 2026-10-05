@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { SessionLobbyResponse } from '../models/loby.model';
+import { API_ENDPOINTS } from '../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class LobbyService {
     }
 
     this.#hubConnection = new HubConnectionBuilder()
-      .withUrl('/hubs/lobby')
+      .withUrl(API_ENDPOINTS.HUBS.LOBBY)
       .withAutomaticReconnect()
       .build();
 
