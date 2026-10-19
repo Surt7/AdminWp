@@ -25,7 +25,7 @@ export class MachineService {
   #error = signal<string | null>(null);
 
   // Active view toggle: 'LIST' (flat table of all machines) or 'IP' (grouped by Intellectual Property / License)
-  readonly viewMode = signal<'LIST' | 'IP'>('IP');
+  readonly viewMode = signal<'LIST' | 'IP'>('LIST');
 
   // Readonly public signals
   readonly isLoading = this.#isLoading.asReadonly();
@@ -85,7 +85,7 @@ export class MachineService {
     }));
   });
 
-  // Backward-compatible signal for models list
+  // Backward-compatible signal for model list
   readonly models = computed<PinballModel[]>(() => this.licenseSummaries());
 
   /**

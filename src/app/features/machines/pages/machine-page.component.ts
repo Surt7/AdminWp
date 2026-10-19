@@ -7,6 +7,7 @@ import { AddMachineFormComponent } from '../components/add-machine/add-machine-f
 import { MachineHeaderComponent } from '../components/machine-header/machine-header.component';
 import { FilterComponent } from '../../../shared/components/filter/filter.component';
 import { CategoryLicenceComponent } from '../components/category-licence/category-licence.component';
+import { CategoryMachineComponent } from '../components/category-machine/category-machine.component';
 
 @Component({
   selector: 'app-machines-page',
@@ -20,6 +21,7 @@ import { CategoryLicenceComponent } from '../components/category-licence/categor
     MachineHeaderComponent,
     FilterComponent,
     CategoryLicenceComponent,
+    CategoryMachineComponent,
   ],
 })
 export class MachinesPageComponent {
@@ -27,7 +29,6 @@ export class MachinesPageComponent {
 
   readonly modelId = input<string>();
   ngOnInit(): void {
-
     this.machineService.loadUnitsFormApi();
   }
   protected readonly selectedModel: Signal<PinballModel | null> = computed(() => {
@@ -36,14 +37,18 @@ export class MachinesPageComponent {
     return this.machineService.models().find((m) => m.id === id) ?? null;
   });
 
+  protected readonly viewMode = this.machineService.viewMode;
+
+  protected readonly machines = this.machineService.machines;
+
   protected readonly modelSummaries = this.machineService.modelSummaries;
 
   protected readonly selectedModelUnits = computed(() => {
     const currentModel = this.selectedModel();
     if (!currentModel) return [];
-    return this.machineService.machines().filter(
-      (m) => m.ipSlug === currentModel.id || m.licenseName === currentModel.name,
-    );
+    return this.machineService
+      .machines()
+      .filter((m) => m.ipSlug === currentModel.id || m.licenseName === currentModel.name);
   });
 
   protected changeStatus(unitId: string, nextStatus: MachineStatus): void {

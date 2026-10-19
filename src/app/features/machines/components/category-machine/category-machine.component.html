@@ -1,0 +1,35 @@
+<p-table
+  [value]="machines()"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template #header>
+    <tr>
+      <th>Numéro de Série</th>
+      <th>Emplacement</th>
+      <th>Licence / Modèle</th>
+      <th>Statut</th>
+      <th>Dernier Ping</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-machine>
+    <tr>
+      <td>
+        <span class="font-bold text-surface-900 dark:text-white">{{ machine.serialNumber }}</span>
+      </td>
+      <td>
+        <span class="text-sm text-surface-600 dark:text-surface-300">{{ machine.displayName }}</span>
+      </td>
+      <td>
+        <span class="font-medium text-surface-800 dark:text-surface-200">{{ machine.licenseName }}</span>
+      </td>
+      <td>
+        <p-tag [value]="machine.status" [severity]="machine.status | statusSeverity" />
+      </td>
+      <td>
+        <span class="text-xs text-surface-500 dark:text-surface-400">{{ machine.lastPing ?? 'N/A' }}</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

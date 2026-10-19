@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { FieldsetCardComponent } from '../fieldset-card/fieldset-card.component';
+import { MachineService } from '../../../features/machines/data-access/machines.service';
 
 @Component({
   selector: 'app-filter',
@@ -12,7 +13,8 @@ import { FieldsetCardComponent } from '../fieldset-card/fieldset-card.component'
   imports: [DividerModule, FieldsetCardComponent, ButtonModule],
 })
 export class FilterComponent {
-  viewMode = signal<'LIST' | 'IP'>('LIST');
+  private readonly machineService = inject(MachineService);
+  readonly viewMode = this.machineService.viewMode;
 
   stats = [
     { title: 'Filtres', online: 8, offline: 12, total: 20 },
