@@ -15,12 +15,7 @@ import { MachineService } from '../../../features/machines/data-access/machines.
 export class FilterComponent {
   private readonly machineService = inject(MachineService);
   readonly viewMode = this.machineService.viewMode;
-
-  stats = [
-    { title: 'Filtres', online: 8, offline: 12, total: 20 },
-    { title: 'Recherches', online: 45, offline: 5, total: 50 },
-    { title: 'Total Machines', online: 10, offline: 2, total: 12 },
-  ];
+  readonly stats = this.machineService.fleetStats;
 
   toggleView(mode: 'LIST' | 'IP'): void {
     this.viewMode.set(mode);

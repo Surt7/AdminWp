@@ -61,28 +61,31 @@
       <!-- Online : En vert lumineux -->
       <div class="flex justify-between items-center">
         <span class="text-surface-600 dark:text-surface-300">Online</span>
-        <span class="font-semibold text-emerald-500 dark:text-emerald-400">8</span>
+        <span class="text-emerald-500">{{ stats().online }}</span>
       </div>
 
       <!-- Offline : Neutre, discret sans attirer l'œil -->
       <div class="flex justify-between items-center">
         <span class="text-surface-600 dark:text-surface-300">Offline</span>
-        <span class="font-medium text-surface-400">12</span>
+        <span class="text-surface-400">{{ stats().offline }}</span>
       </div>
 
       <!-- Pending : En jaune / ambre -->
       <div class="flex justify-between items-center">
-        <span class="text-surface-600 dark:text-surface-300">Pending to enroll</span>
-        <span class="font-semibold text-amber-500 dark:text-amber-400">3</span>
+        <span class="text-surface-600 dark:text-surface-300">En attente d'enrollement</span>
+        <span class="text-gray-500">{{ stats().pending }}</span>
       </div>
-
+      <div class="flex justify-between items-center">
+        <span class="text-surface-600 dark:text-surface-300">Maintenance</span>
+        <span class="text-amber-500">{{ stats().maintenance }}</span>
+      </div>
       <!-- Séparateur resserré -->
       <p-divider type="dashed" styleClass="!my-1.5 border-surface-200 dark:border-surface-800" />
 
       <!-- Total : Bien visible pour conclure -->
       <div class="flex justify-between items-center">
         <span class="font-semibold text-surface-900 dark:text-white">Totalité du parc</span>
-        <span class="font-bold text-surface-900 dark:text-white">23</span>
+        <span class="font-bold">{{ stats().total }}</span>
       </div>
 
     </div>

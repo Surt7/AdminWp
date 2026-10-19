@@ -73,6 +73,18 @@ export class MachineService {
     return summaries;
   });
 
+  readonly fleetStats = computed(() => {
+    const all = this.#machines();
+
+    return {
+      total: all.length,
+      online: all.filter((m) => m.status === 'ONLINE').length,
+      offline: all.filter((m) => m.status === 'OFFLINE').length,
+      pending: all.filter((m) => m.status === 'PENDING').length,
+      maintenance: all.filter((m) => m.status === 'MAINTENANCE').length,
+    };
+  });
+
   // Backward-compatible computed signal for existing components
   readonly modelSummaries = computed<ModelSummary[]>(() => {
     return this.licenseSummaries().map((lic) => ({
