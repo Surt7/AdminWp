@@ -16,6 +16,9 @@ export interface StatCardData {
   imports: [FieldsetModule, DividerModule],
   templateUrl: './fieldset-card.component.html',
   styleUrl: './fieldset-card.component.css',
+  host: {
+    class: 'block h-full min-w-0',
+  },
 })
 export class FieldsetCardComponent {
   title = input.required<string>();

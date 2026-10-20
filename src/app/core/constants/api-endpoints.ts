@@ -1,24 +1,26 @@
-// Centralized API Endpoints and Hub routes
+import { environment } from '../../../environments/environment';
 
 export const API_ENDPOINTS = {
   AUTH: {
-    // Conditional query param helper for SSO return URL
     LOGIN: (returnUrl?: string) =>
-      returnUrl ? `/api/auth/login?returnUrl=${encodeURIComponent(returnUrl)}` : '/api/auth/login',
-    CURRENT_USER: '/api/auth/user',
-    LOGOUT: '/api/auth/logout',
+      returnUrl
+        ? `${environment.bffBaseUrl}/api/auth/login?returnUrl=${encodeURIComponent(returnUrl)}`
+        : `${environment.bffBaseUrl}/api/auth/login`,
+    CURRENT_USER: `${environment.bffBaseUrl}/api/auth/user`,
+    LOGOUT: `${environment.bffBaseUrl}/api/auth/logout`,
   },
   MACHINES: {
-    ROOT: '/api/v1/admin/machines',
-    BY_ID: (id: string) => `/api/v1/admin/machines/${id}`,
-    DASHBOARD: (id: string) => `/api/v1/admin/machines/${id}/dashboard`,
-    PROVISION: '/api/v1/admin/machines/provision',
+    ROOT: `${environment.bffBaseUrl}/api/v1/admin/machines`,
+    BY_ID: (id: string) => `${environment.bffBaseUrl}/api/v1/admin/machines/${id}`,
+    DASHBOARD: (id: string) => `${environment.bffBaseUrl}/api/v1/admin/machines/${id}/dashboard`,
+    PROVISION: `${environment.bffBaseUrl}/api/v1/admin/machines/provision`,
   },
   STREAMING_ACCESS: {
-    GRANTS: '/api/v1/admin/streaming-access/grants',
-    REVOKE: (grantId: string) => `/api/v1/admin/streaming-access/grants/${grantId}/revoke`,
+    GRANTS: `${environment.bffBaseUrl}/api/v1/admin/streaming-access/grants`,
+    REVOKE: (grantId: string) =>
+      `${environment.bffBaseUrl}/api/v1/admin/streaming-access/grants/${grantId}/revoke`,
   },
   HUBS: {
-    LOBBY: '/hubs/lobby',
+    LOBBY: `${environment.bffBaseUrl}/hubs/lobby`,
   },
 } as const;

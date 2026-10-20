@@ -1,11 +1,11 @@
 {
   "/api": {
-    "target": "https://localhost:7285",
+    "target": "https://bff.worldpinball.local",
     "secure": false,
     "changeOrigin": true
   },
   "/hubs": {
-    "target": "https://localhost:7285",
+    "target": "https://bff.worldpinball.local",
     "secure": false,
     "changeOrigin": true,
     "ws": true
