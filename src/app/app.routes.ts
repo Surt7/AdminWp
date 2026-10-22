@@ -37,11 +37,11 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'test-lobby',
+        path: 'lobby-display',
         loadComponent: async () => {
-          const { LobbyTestComponent } =
-            await import('./features/lobby/loby-test/lobby-test.component');
-          return LobbyTestComponent;
+          const { LobbyDisplayComponent } =
+            await import('./features/lobby/lobby-display/lobby-display.component');
+          return LobbyDisplayComponent;
         },
       },
     ],

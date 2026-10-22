@@ -1,0 +1,19 @@
+<div class="flex items-center justify-between pb-4 border-b border-surface-700">
+  <div>
+    <h2 class="text-2xl font-bold text-surface-100">Affichage des Sessions en Live (Lobby)</h2>
+    <p class="text-xs text-surface-400 mt-1">Supervision temps réel des sessions de jeu</p>
+  </div>
+  <div class="flex items-center gap-3">
+
+    <app-hub-connection />
+    <!-- Bouton Activation Supervision Admin -->
+    <button
+      pButton
+      [severity]="lobbyService.isSupervising() ? 'danger' : 'warn'"
+      [disabled]="!lobbyService.isConnected()"
+      (click)="toggleSupervision.emit()"
+    >
+      {{ lobbyService.isSupervising() ? 'Quitter God Mode' : ' Mode God (Admin)' }}
+    </button>
+  </div>
+</div>

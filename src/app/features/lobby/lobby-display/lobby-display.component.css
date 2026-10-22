@@ -1,0 +1,20 @@
+.slot-open {
+  border: 1px solid #333;
+  opacity: 0.6;
+}
+
+.slot-occupied {
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+}
+
+.slot-locked {
+  border: 1px dashed #555;
+  background-color: #1a1a1a;
+  color: #888;
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Style for lobby-test component */

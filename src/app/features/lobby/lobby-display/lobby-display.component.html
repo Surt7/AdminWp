@@ -1,0 +1,57 @@
+<div class="p-6 max-w-4xl mx-auto space-y-6">
+  <!-- 1. En-tête : on écoute l'événement émis par le header -->
+  <app-header-display (toggleSupervision)="toggleSupervision()" />
+  <!-- 2. Zone God Mode : affichée automatiquement par le body -->
+  <app-body-display />
+
+  <!-- 3. Formulaire classique pour cibler une partie précise -->
+  <app-form-header (join)="onJoin($event)" />
+  <!-- Affichage d'un lobby ciblé unique -->
+  @if (lobbyService.lobbyState(); as lobby) {
+    <div class="p-4 rounded-lg bg-surface-950 border border-surface-700 space-y-4 mt-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h4 class="font-bold text-emerald-400">Match suivi en direct</h4>
+          <span class="px-2 py-0.5 text-xs rounded bg-surface-800 text-surface-300 font-mono">
+              État : {{ lobby.sessionState }}
+            </span>
+        </div>
+        <!-- Bouton pour cesser de regarder -->
+        <button
+          pButton
+          class="pi pi-eye-slash"
+          severity="secondary"
+          [text]="true"
+          [rounded]="true"
+          pTooltip="Cesser de regarder cette partie"
+          (click)="onLeave()"
+        ></button>
+      </div>
+
+      <p class="text-xs text-surface-400 font-mono">Session ID : {{ lobby.sessionId }}</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        @for (slot of lobby.slots; track slot.slotNumber) {
+          <div
+            class="p-4 rounded-lg border text-center transition-all"
+            [class]="slot.isOccupied
+    ? 'border-emerald-500 bg-emerald-950/20'
+    : 'border-surface-700 bg-surface-800/40'"
+          >
+            <div class="text-xs uppercase tracking-wider text-surface-400">Slot {{ slot.slotNumber }}</div>
+            <div class="text-sm font-bold mt-1" [class.text-emerald-400]="slot.isOccupied"
+                 [class.text-surface-500]="!slot.isOccupied">
+              {{ slot.isOccupied ? 'Occupé' : 'Libre' }}
+            </div>
+            @if (slot.isOccupied) {
+              <div class="text-xs font-mono text-surface-300 mt-1">
+                {{ slot.guestInitials || slot.userId || 'Joueur' }}
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+

@@ -1,0 +1,18 @@
+<h3 class="text-md font-semibold text-surface-200">Rejoindre une partie spécifique (Mode Borne / Joueur)</h3>
+<div class="flex gap-3 items-center">
+  <input
+    pInputText
+    [ngModel]="sessionId()"
+    (ngModelChange)="sessionId.set($event)"
+    placeholder="Entrez un sessionId (ex: GUID de la partie)..."
+    class="flex-1"
+  />
+  <button
+    pButton
+    (click)="onJoin()"
+    [disabled]="!lobbyService.isConnected() || !sessionId().trim()"
+  >
+    Rejoindre
+  </button>
+</div>
+
